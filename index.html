@@ -3,6 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#14261C">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Roy &amp; Louise, samen sinds 12 augustus 2013.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:title" content="Roy &amp; Louise">
+<meta property="og:description" content="Al ... samen. Sinds 12 augustus 2013.">
+<meta property="og:url" content="https://rolo4ever.vercel.app/">
+<meta property="og:image" content="https://rolo4ever.vercel.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Roy &amp; Louise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,7 +91,7 @@ body {
   padding-block: clamp(3.2rem, 11vh, 6.5rem) 0;
 }
 
-.title-block { margin-top: 0; }
+.title-block { margin-top: 0; text-align: center; }
 h1 {
   margin: 0;
   font-family: var(--font-display);
@@ -87,7 +102,7 @@ h1 {
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
 }
 h1 em { font-style: italic; color: var(--hero-gold); padding: 0 0.04em; }
-.timer-row { display: flex; align-items: baseline; gap: clamp(0.8rem, 2vw, 1.8rem); margin-top: clamp(1.4rem, 3.2vw, 2.4rem); }
+.timer-row { display: flex; justify-content: center; align-items: baseline; gap: clamp(0.8rem, 2vw, 1.8rem); margin-top: clamp(1.4rem, 3.2vw, 2.4rem); }
 .lead {
   flex: none;
   margin: 0;
@@ -108,7 +123,7 @@ h1 em { font-style: italic; color: var(--hero-gold); padding: 0 0.04em; }
   margin: 0;
   padding: 0;
 }
-.unit { min-width: 0; border-top: 1px solid rgba(248, 246, 240, 0.5); padding-top: 0.55rem; text-shadow: 0 1px 16px rgba(0, 0, 0, 0.4); }
+.unit { min-width: 0; text-align: center; border-top: 1px solid rgba(248, 246, 240, 0.5); padding-top: 0.55rem; text-shadow: 0 1px 16px rgba(0, 0, 0, 0.4); }
 .num {
   display: block;
   font-weight: 300;
@@ -175,7 +190,7 @@ h1 em { font-style: italic; color: var(--hero-gold); padding: 0 0.04em; }
 
 
 @media (max-width: 760px) {
-  .timer-row { margin-top: 1.1rem; flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+  .timer-row { margin-top: 1.1rem; flex-direction: column; align-items: center; gap: 0.8rem; }
   .timer-row .timer { align-self: stretch; }
   .timer-row .lead { font-size: clamp(1.35rem, 5.4vw, 1.7rem); }
   .mode { min-height: 30px; font-size: 0.85rem; }
