@@ -88,7 +88,7 @@ body {
 .hero-inner {
   position: relative;
   z-index: 2;
-  padding-block: clamp(3.2rem, 11vh, 6.5rem) 0;
+  padding-block: clamp(1.4rem, 4.5vh, 3rem) 0;
 }
 
 .title-block { margin-top: 0; text-align: center; }
@@ -96,13 +96,13 @@ h1 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(3.3rem, 10.5vw, 8.2rem);
+  font-size: clamp(4.95rem, 15.75vw, 12.3rem);
   line-height: 0.92;
   letter-spacing: -0.01em;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
 }
 h1 em { font-style: italic; color: var(--hero-gold); padding: 0 0.04em; }
-.timer-row { display: flex; justify-content: center; align-items: baseline; gap: clamp(0.8rem, 2vw, 1.8rem); margin-top: clamp(1.4rem, 3.2vw, 2.4rem); }
+.timer-row { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); padding-inline: max(16px, env(safe-area-inset-left, 0px)); display: flex; justify-content: center; align-items: baseline; gap: clamp(0.8rem, 2vw, 1.8rem); }
 .lead {
   flex: none;
   margin: 0;
@@ -190,7 +190,7 @@ h1 em { font-style: italic; color: var(--hero-gold); padding: 0 0.04em; }
 
 
 @media (max-width: 760px) {
-  .timer-row { margin-top: 1.1rem; flex-direction: column; align-items: center; gap: 0.8rem; }
+  .timer-row { flex-direction: column; align-items: center; gap: 0.8rem; }
   .timer-row .timer { align-self: stretch; }
   .timer-row .lead { font-size: clamp(1.35rem, 5.4vw, 1.7rem); }
   .mode { min-height: 30px; font-size: 0.85rem; }
@@ -399,6 +399,28 @@ h1 em { font-style: italic; color: var(--hero-gold); padding: 0 0.04em; }
     start();
   }
 })();
+
+  /* Teller precies tussen de titel en Roys hoofd */
+  (function () {
+    var hero = document.querySelector('.hero'), h1 = document.querySelector('h1'), row = document.getElementById('row');
+    if (!hero || !h1 || !row) return;
+    var IMG_W = 2000, IMG_H = 1333, HEAD_Y = 643, POS_Y = 0.82, ORIGIN_Y = 0.8, DRIFT = 1.025;
+    function place() {
+      var W = hero.clientWidth, H = hero.clientHeight;
+      var s = Math.max(W / IMG_W, H / IMG_H);
+      var y = (H - IMG_H * s) * POS_Y + HEAD_Y * s;
+      var oy = H * ORIGIN_Y;
+      y = oy + (y - oy) * DRIFT;
+      var top = h1.offsetTop + h1.offsetHeight;
+      var mid = (top + y) / 2;
+      row.style.top = Math.round(mid) + 'px';
+    }
+    place();
+    window.addEventListener('resize', place);
+    window.addEventListener('load', place);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+    if (window.ResizeObserver) new ResizeObserver(place).observe(h1);
+  })();
 </script>
 
 </html>
