@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Roy &amp; Louise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600&display=swap">
+<style>
+/* Opzet: foto over de volle breedte met titel en teller linksboven over het donkere bladerdek; het stel blijft zichtbaar eronder. Daarna twee rustige secties: cijfers en mijlpalen. */
+:root {
+  --bg: #EDF0EB;
+  --fg: #17251D;
+  --hero-fg: #F8F6F0;
+  --hero-muted: rgba(248, 246, 240, 0.82);
+  --hero-gold: #EBCB93;
+  --glass: rgba(8, 18, 12, 0.32);
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  height: clamp(600px, max(100svh, 58vw), 1100px);
+  overflow: hidden;
+  color: var(--hero-fg);
+  background: #0e1a12;
+}
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 60% 82%;
+  transform-origin: 60% 80%;
+  animation: drift 48s ease-in-out infinite alternate;
+}
+@keyframes drift { from { transform: scale(1); } to { transform: scale(1.05); } }
+.shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 16, 10, 0.7) 0%, rgba(6, 16, 10, 0.42) 34%, rgba(6, 16, 10, 0) 60%),
+    linear-gradient(90deg, rgba(6, 16, 10, 0.36), rgba(6, 16, 10, 0) 56%);
+}
+#motes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  padding-block: clamp(3.2rem, 11vh, 6.5rem) 0;
+}
+
+.title-block { margin-top: 0; }
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3.3rem, 10.5vw, 8.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+h1 em { font-style: italic; color: var(--hero-gold); padding: 0 0.04em; }
+.timer-row { display: flex; align-items: baseline; gap: clamp(0.8rem, 2vw, 1.8rem); margin-top: clamp(1.4rem, 3.2vw, 2.4rem); }
+.lead {
+  flex: none;
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.5rem, 3.6vw, 3.1rem);
+  line-height: 1;
+  color: var(--hero-fg);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+}
+.timer {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(0.5rem, 2vw, 1.6rem);
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 40rem;
+  margin: 0;
+  padding: 0;
+}
+.unit { min-width: 0; border-top: 1px solid rgba(248, 246, 240, 0.5); padding-top: 0.55rem; text-shadow: 0 1px 16px rgba(0, 0, 0, 0.4); }
+.num {
+  display: block;
+  font-weight: 300;
+  font-size: clamp(1.7rem, 6.4vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.lab {
+  display: block;
+  margin-top: 0.4rem;
+  font-weight: 600;
+  font-size: clamp(0.55rem, 1.9vw, 0.72rem);
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hero-muted);
+}
+
+.total { flex: 0 1 auto; min-width: 0; }
+.total .num { font-size: clamp(1.7rem, 7vw, 4rem); white-space: nowrap; }
+.total .unit { padding-right: 0.4rem; }
+.modes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 1.3rem; }
+.modes-label {
+  margin-right: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hero-muted);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+}
+.mode {
+  min-height: 40px;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid rgba(248, 246, 240, 0.5);
+  border-radius: 999px;
+  background: var(--glass);
+  color: var(--hero-fg);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.mode:hover { border-color: rgba(248, 246, 240, 0.9); }
+.mode:focus-visible { outline: 2px solid var(--hero-gold); outline-offset: 3px; }
+.mode[aria-pressed="true"] { background: var(--hero-gold); border-color: var(--hero-gold); color: #1d1608; }
+
+.rise { animation: rise 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.rise.d1 { animation-delay: 0.12s; }
+.rise.d2 { animation-delay: 0.24s; }
+.rise.d3 { animation-delay: 0.36s; }
+.rise.d4 { animation-delay: 0.48s; }
+@keyframes rise { from { opacity: 0.35; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+
+@media (max-width: 760px) {
+  .timer-row { margin-top: 1.1rem; }
+  .timer-row:not(.is-total) { flex-direction: column; align-items: stretch; gap: 0.8rem; }
+  .timer-row:not(.is-total) .lead { font-size: clamp(1.35rem, 5.4vw, 1.7rem); }
+  .timer-row.is-total { gap: 0.6rem; }
+  .timer-row.is-total .lead { font-size: clamp(1.1rem, 4.6vw, 1.5rem); }
+  .modes { flex-wrap: nowrap; gap: 0.25rem; margin-top: 1rem; }
+  .modes-label { display: none; }
+  .mode { flex: 1 1 auto; min-width: 0; padding: 0.5rem 0.15rem; text-align: center; font-size: clamp(0.64rem, 2.9vw, 0.76rem); letter-spacing: 0; }
+  .photo { object-position: 61% 82%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo { animation: none; }
+  .rise { animation: none; }
+  #motes { display: none; }
+}
+</style>
+
+<main>
+  <header class="hero">
+    <img class="photo" src="foto.jpg" width="2000" height="1333" alt="Roy en Louise staan dicht tegen elkaar in een tuin vol hortensia's en kijken elkaar aan">
+    <div class="shade"></div>
+    <canvas id="motes" aria-hidden="true"></canvas>
+
+    <div class="hero-inner wrap">
+      <div class="title-block">
+        <h1 class="rise">Roy <em>&amp;</em> Louise</h1>
+        <div class="timer-row" id="row">
+        <span class="lead rise d1">Al</span>
+        <div class="timer rise d2" id="timer" role="timer" aria-label="Roy en Louise zijn al samen">
+          <div class="unit"><span class="num" id="n-y">13</span><span class="lab" id="l-y">jaar</span></div>
+          <div class="unit"><span class="num" id="n-m">02</span><span class="lab" id="l-m">maanden</span></div>
+          <div class="unit"><span class="num" id="n-d">03</span><span class="lab" id="l-d">dagen</span></div>
+          <div class="unit"><span class="num" id="n-h">00</span><span class="lab" id="l-h">uur</span></div>
+          <div class="unit"><span class="num" id="n-i">00</span><span class="lab" id="l-i">minuten</span></div>
+          <div class="unit"><span class="num" id="n-s">00</span><span class="lab" id="l-s">seconden</span></div>
+        </div>
+        <div class="total" id="total" hidden>
+          <div class="unit"><span class="num" id="t-num">0</span><span class="lab" id="t-lab">dagen</span></div>
+        </div>
+        <span class="lead rise d3">samen...</span>
+        </div>
+        <div class="modes rise d4" role="group" aria-label="Toon de tijd in totaal">
+          <span class="modes-label">Of alles in:</span>
+          <button class="mode" type="button" data-mode="months" aria-pressed="false">maanden</button>
+          <button class="mode" type="button" data-mode="weeks" aria-pressed="false">weken</button>
+          <button class="mode" type="button" data-mode="days" aria-pressed="false">dagen</button>
+          <button class="mode" type="button" data-mode="hours" aria-pressed="false">uren</button>
+          <button class="mode" type="button" data-mode="minutes" aria-pressed="false">minuten</button>
+          <button class="mode" type="button" data-mode="seconds" aria-pressed="false">seconden</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+</main>
+
+
+<script>
+(function () {
+  'use strict';
+  var DAY = 864e5, HOUR = 36e5;
+  var START = Date.UTC(2013, 7, 12, 20, 0, 0); // 12 augustus 2013, 20:00 Nederlandse tijd (als wandkloktijd)
+
+  /* ---- Nederlandse wandkloktijd: kalenderrekening zonder zomertijd-sprongen ---- */
+  var amsFmt = null;
+  try {
+    amsFmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Amsterdam', year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23'
+    });
+  } catch (e) { amsFmt = null; }
+
+  function wallNow() {
+    var now = new Date();
+    if (!amsFmt) {
+      return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
+    }
+    var o = {};
+    amsFmt.formatToParts(now).forEach(function (p) { if (p.type !== 'literal') o[p.type] = parseInt(p.value, 10); });
+    return Date.UTC(o.year, o.month - 1, o.day, o.hour % 24, o.minute, o.second);
+  }
+
+  function addMonths(ms, m) {
+    var d = new Date(ms);
+    var day = d.getUTCDate();
+    var t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + m, 1, d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds()));
+    var dim = new Date(Date.UTC(t.getUTCFullYear(), t.getUTCMonth() + 1, 0)).getUTCDate();
+    t.setUTCDate(Math.min(day, dim));
+    return t.getTime();
+  }
+
+  function breakdown(startMs, nowMs) {
+    var s = new Date(startMs), n = new Date(nowMs);
+    var months = (n.getUTCFullYear() - s.getUTCFullYear()) * 12 + (n.getUTCMonth() - s.getUTCMonth());
+    while (months > 0 && addMonths(startMs, months) > nowMs) months--;
+    var rem = nowMs - addMonths(startMs, months);
+    var days = Math.floor(rem / DAY); rem -= days * DAY;
+    var hours = Math.floor(rem / HOUR); rem -= hours * HOUR;
+    var mins = Math.floor(rem / 6e4); rem -= mins * 6e4;
+    var secs = Math.floor(rem / 1000);
+    return { years: Math.floor(months / 12), months: months % 12, days: days, hours: hours, mins: mins, secs: secs };
+  }
+
+  var nf = new Intl.NumberFormat('nl-NL');
+  var dateFmt = new Intl.DateTimeFormat('nl-NL', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function el(id) { return document.getElementById(id); }
+  function plural(n, one, many) { return n === 1 ? one : many; }
+
+  /* ---- Teller ---- */
+  var cache = {};
+  var mode = null;
+  var MODES = {
+    months:  { div: 0,       one: 'maand',  many: 'maanden' },
+    days:    { div: DAY,     one: 'dag',    many: 'dagen' },
+    weeks:   { div: 7 * DAY, one: 'week',   many: 'weken' },
+    hours:   { div: HOUR,    one: 'uur',    many: 'uren' },
+    minutes: { div: 6e4,     one: 'minuut', many: 'minuten' },
+    seconds: { div: 1000,    one: 'seconde', many: 'seconden' }
+  };
+  function setText(id, v) { if (cache[id] !== v) { cache[id] = v; el(id).textContent = v; } }
+
+  function updateTimer(now) {
+    var b = breakdown(START, now);
+    setText('n-y', String(b.years));
+    setText('n-m', pad(b.months));
+    setText('n-d', pad(b.days));
+    setText('n-h', pad(b.hours));
+    setText('n-i', pad(b.mins));
+    setText('n-s', pad(b.secs));
+    setText('l-y', 'jaar');
+    setText('l-m', plural(b.months, 'maand', 'maanden'));
+    setText('l-d', plural(b.days, 'dag', 'dagen'));
+    setText('l-h', 'uur');
+    setText('l-i', plural(b.mins, 'minuut', 'minuten'));
+    setText('l-s', plural(b.secs, 'seconde', 'seconden'));
+    if (b.secs === 0 || !cache.aria) {
+      cache.aria = 1;
+      el('timer').setAttribute('aria-label',
+        'Roy en Louise zijn al ' + b.years + ' jaar, ' + b.months + ' ' + plural(b.months, 'maand', 'maanden') + ', ' +
+        b.days + ' ' + plural(b.days, 'dag', 'dagen') + ', ' + b.hours + ' uur en ' + b.mins + ' ' + plural(b.mins, 'minuut', 'minuten') + ' samen');
+    }
+    if (mode) {
+      var m = MODES[mode];
+      var v = mode === 'months' ? b.years * 12 + b.months : Math.floor((now - START) / m.div);
+      setText('t-num', nf.format(v));
+      setText('t-lab', v === 1 ? m.one : m.many);
+    }
+  }
+
+  var modeBtns = document.querySelectorAll('.mode');
+  function applyMode() {
+    el('timer').hidden = !!mode;
+    el('total').hidden = !mode;
+    el('row').classList.toggle('is-total', !!mode);
+    Array.prototype.forEach.call(modeBtns, function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    updateTimer(wallNow());
+  }
+  Array.prototype.forEach.call(modeBtns, function (b) {
+    b.addEventListener('click', function () {
+      var key = b.getAttribute('data-mode');
+      mode = (mode === key) ? null : key;
+      applyMode();
+    });
+  });
+  function tick() { updateTimer(wallNow()); }
+  tick();
+  setInterval(tick, 250);
+
+  /* ---- Zachte lichtdeeltjes in de hero ---- */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv = el('motes');
+  if (cv && cv.getContext && !reduce) {
+    var ctx = cv.getContext('2d'), W = 0, H = 0, P = [], last = 0, running = false;
+    var resize = function () {
+      var r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = W < 600 ? 26 : 46;
+      P = [];
+      for (var i = 0; i < n; i++) {
+        P.push({ x: Math.random() * W, y: Math.random() * H, r: 0.9 + Math.random() * 2.1, v: 7 + Math.random() * 12, ph: Math.random() * 6.28, a: 0.3 + Math.random() * 0.45 });
+      }
+    };
+    var frame = function (t) {
+      if (!running) return;
+      var dt = Math.min(0.05, (t - last) / 1000 || 0.016); last = t;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < P.length; i++) {
+        var p = P[i];
+        p.y -= p.v * dt;
+        p.x += Math.sin(t / 2600 + p.ph) * 0.12;
+        if (p.y < -6) { p.y = H + 6; p.x = Math.random() * W; }
+        var a = p.a * (0.6 + 0.4 * Math.sin(t / 1700 + p.ph));
+        ctx.beginPath(); ctx.fillStyle = 'rgba(255,238,200,' + (a * 0.3).toFixed(3) + ')'; ctx.arc(p.x, p.y, p.r * 3.6, 0, 6.2832); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle = 'rgba(255,246,222,' + a.toFixed(3) + ')'; ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    };
+    var start = function () { if (!running) { running = true; requestAnimationFrame(frame); } };
+    resize();
+    window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) running = false; else start(); });
+    start();
+  }
+})();
+</script>
+
+</html>
