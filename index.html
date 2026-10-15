@@ -92,7 +92,7 @@ html { background: #000; }
 .hero-inner {
   position: relative;
   z-index: 2;
-  padding-block: clamp(1.4rem, 4.5vh, 3rem) 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + clamp(1.4rem, 4.2vw, 2.4rem));
 }
 
 .title-block { margin-top: 0; text-align: center; }
@@ -250,6 +250,12 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
   .timer-row .lead { font-size: clamp(1.35rem, 5.4vw, 1.7rem); }
   .mode { min-height: 30px; font-size: 0.85rem; }
   .photo, .couple { object-position: 61% 82%; }
+}
+/* Als geïnstalleerde app: nooit scrollen, altijd precies het zichtbare scherm vullen */
+html { overscroll-behavior: none; }
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  html, body { height: 100%; overflow: hidden; }
+  .hero { height: 100dvh; min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .photo { animation: none; }
@@ -525,6 +531,8 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
     }
     place();
     window.addEventListener('resize', place);
+    window.addEventListener('orientationchange', place);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', place);
     window.addEventListener('load', place);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
     if (window.ResizeObserver) new ResizeObserver(place).observe(h1);
