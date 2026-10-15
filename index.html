@@ -422,6 +422,9 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
       applyMode();
     });
   });
+  document.addEventListener('click', function (e) {
+    if (mode && !(e.target.closest && e.target.closest('.mode, .view'))) { mode = null; applyMode(); }
+  });
   var viewBtns = document.querySelectorAll('.view');
   Array.prototype.forEach.call(viewBtns, function (b) {
     b.addEventListener('click', function () {
