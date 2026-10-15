@@ -151,9 +151,9 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
   color: var(--hero-muted);
 }
 
-.total { flex: 0 1 auto; min-width: 0; }
+.total { display: grid; justify-items: center; flex: 1 1 auto; min-width: 0; max-width: 40rem; margin: 0; padding: 0; }
 .total .num { white-space: nowrap; }
-.total .unit { padding-right: 0.4rem; }
+.total .unit { padding-inline: 1.4rem; }
 .menu {
   position: absolute;
   left: max(16px, env(safe-area-inset-left, 0px), calc((100% - 1200px) / 2 + 16px));
@@ -235,7 +235,7 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
 
 @media (max-width: 760px) {
   .timer-row { flex-direction: column; align-items: center; gap: 0.8rem; }
-  .timer-row .timer { align-self: stretch; }
+  .timer-row .timer, .timer-row .total { align-self: stretch; }
   .timer-row .lead { font-size: clamp(1.35rem, 5.4vw, 1.7rem); }
   .mode { min-height: 30px; font-size: 0.85rem; }
   .photo, .couple { object-position: 61% 82%; }
@@ -427,6 +427,9 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
   });
   document.addEventListener('click', function (e) {
     if (mode && !(e.target.closest && e.target.closest('.mode, .view'))) { mode = null; applyMode(); }
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.rise'), function (n) {
+    n.addEventListener('animationend', function () { n.classList.remove('rise'); });
   });
   var viewBtns = document.querySelectorAll('.view');
   Array.prototype.forEach.call(viewBtns, function (b) {
