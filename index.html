@@ -230,6 +230,17 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
 .rise.d2 { animation-delay: 0.24s; }
 .rise.d3 { animation-delay: 0.36s; }
 .rise.d4 { animation-delay: 0.48s; }
+/* Opbouw bij het openen: eerst de foto, dan de titel, dan de teller, dan de keuzes */
+.photo, .couple { opacity: 0; transition: opacity 1.2s ease; }
+.hero.ready .photo, .hero.ready .couple { opacity: 1; }
+.stage { opacity: 0; }
+.hero.ready .stage { animation: stagein 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.hero.ready .timer-row.stage { animation-name: fadein; }
+.hero.ready .s1 { animation-delay: 1.1s; }
+.hero.ready .s2 { animation-delay: 2s; }
+.hero.ready .s3 { animation-delay: 2.9s; }
+@keyframes stagein { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rise { from { opacity: 0.35; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 
@@ -243,6 +254,8 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
 @media (prefers-reduced-motion: reduce) {
   .photo { animation: none; }
   .rise { animation: none; }
+  .photo, .couple { opacity: 1; transition: none; }
+  .hero .stage { opacity: 1; animation: none !important; }
   #motes { display: none; }
 }
 </style>
@@ -255,10 +268,10 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
 
     <div class="hero-inner wrap">
       <div class="title-block">
-        <h1 class="rise">Roy <em>&amp;</em> Louise</h1>
-        <div class="timer-row" id="row">
-        <span class="lead rise d1" id="lead-a">al</span>
-        <div class="timer rise d2" id="timer" role="timer" aria-label="Roy en Louise zijn al samen">
+        <h1 class="stage s1">Roy <em>&amp;</em> Louise</h1>
+        <div class="timer-row stage s2" id="row">
+        <span class="lead" id="lead-a">al</span>
+        <div class="timer" id="timer" role="timer" aria-label="Roy en Louise zijn al samen">
           <div class="unit"><span class="num" id="n-y">13</span><span class="lab" id="l-y">jaar</span></div>
           <div class="unit"><span class="num" id="n-m">02</span><span class="lab" id="l-m">maanden</span></div>
           <div class="unit"><span class="num" id="n-d">03</span><span class="lab" id="l-d">dagen</span></div>
@@ -269,13 +282,13 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
         <div class="total" id="total" hidden>
           <div class="unit"><span class="num" id="t-num">0</span><span class="lab" id="t-lab">dagen</span></div>
         </div>
-        <span class="lead lead-b rise d3" id="lead-b"><span class="w on" id="w-s">samen...</span><span class="w" id="w-g">getrouwd...</span></span>
+        <span class="lead lead-b" id="lead-b"><span class="w on" id="w-s">samen...</span><span class="w" id="w-g">getrouwd...</span></span>
         </div>
       </div>
     </div>
     <img class="couple" src="couple.webp" width="2576" height="1717" alt="" aria-hidden="true">
     <div class="views">
-      <div class="view-btns rise d4" role="group" aria-label="Kies wat de teller laat zien">
+      <div class="view-btns stage s3" role="group" aria-label="Kies wat de teller laat zien">
         <button class="view" type="button" data-view="together" aria-pressed="true" aria-label="Samen" title="Samen">
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 26.5C8.2 21 5 16.6 5 12.3 5 8.8 7.6 6.5 10.7 6.5 13.1 6.5 15 7.8 16 10 17 7.8 18.9 6.5 21.3 6.5 24.4 6.5 27 8.8 27 12.3 27 16.6 23.8 21 16 26.5Z"/></svg>
         </button>
@@ -285,7 +298,7 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
       </div>
     </div>
     <div class="menu">
-      <div class="modes rise d4" role="group" aria-label="Toon de tijd in totaal">
+      <div class="modes stage s3" role="group" aria-label="Toon de tijd in totaal">
         <button class="mode" type="button" data-mode="years" aria-pressed="false">jaren</button>
         <button class="mode" type="button" data-mode="months" aria-pressed="false">maanden</button>
         <button class="mode" type="button" data-mode="weeks" aria-pressed="false">weken</button>
@@ -428,9 +441,20 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
   document.addEventListener('click', function (e) {
     if (mode && !(e.target.closest && e.target.closest('.mode, .view'))) { mode = null; applyMode(); }
   });
-  Array.prototype.forEach.call(document.querySelectorAll('.rise'), function (n) {
-    n.addEventListener('animationend', function () { n.classList.remove('rise'); });
-  });
+  /* Pas als de foto er is, beginnen de titel, de teller en de keuzes aan hun opbouw */
+  (function () {
+    var hero = document.querySelector('.hero');
+    var imgs = Array.prototype.slice.call(hero.querySelectorAll('img.photo, img.couple'));
+    var started = false;
+    function go() { if (started) return; started = true; hero.classList.add('ready'); }
+    function check() {
+      for (var i = 0; i < imgs.length; i++) if (!(imgs[i].complete && imgs[i].naturalWidth)) return;
+      go();
+    }
+    imgs.forEach(function (im) { im.addEventListener('load', check); im.addEventListener('error', go); });
+    check();
+    setTimeout(go, 6000);
+  })();
   var viewBtns = document.querySelectorAll('.view');
   Array.prototype.forEach.call(viewBtns, function (b) {
     b.addEventListener('click', function () {
