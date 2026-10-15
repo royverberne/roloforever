@@ -257,7 +257,7 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
       <div class="title-block">
         <h1 class="rise">Roy <em>&amp;</em> Louise</h1>
         <div class="timer-row" id="row">
-        <span class="lead rise d1" id="lead-a">Al</span>
+        <span class="lead rise d1" id="lead-a">al</span>
         <div class="timer rise d2" id="timer" role="timer" aria-label="Roy en Louise zijn al samen">
           <div class="unit"><span class="num" id="n-y">13</span><span class="lab" id="l-y">jaar</span></div>
           <div class="unit"><span class="num" id="n-m">02</span><span class="lab" id="l-m">maanden</span></div>
@@ -375,7 +375,7 @@ h1 em { font-style: italic; color: var(--accent); padding: 0 0.04em; transition:
     var b = before ? breakdown(now, ref) : breakdown(ref, now);
     var elapsed = Math.abs(now - ref);
     el('row').classList.toggle('long', view === 'married' && before);
-    setText('lead-a', before ? 'Nog' : 'Al');
+    setText('lead-a', before ? 'Nog' : 'al');
     if (cache.view !== view) {
       cache.view = view;
       document.querySelector('.hero').setAttribute('data-view', view);
